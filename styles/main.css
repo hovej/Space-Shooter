@@ -1,3 +1,8 @@
-#canvas {
-  border: 1px solid black;
+#myCanvas {
+  border: 3px solid black
+}
+#button-container {
+  position: absolute;
+  left: 50%;
+  top: 10px;
 }

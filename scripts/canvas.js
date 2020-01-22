@@ -32,10 +32,10 @@ function updateGameArea() {
   if (isMoving) {
     switch (code) {
       case 87:
-        player.y--;
+        player.y -= 3;
         break;
       case 83:
-        player.y++;
+        player.y += 3;
         break;
     }
   }

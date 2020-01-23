@@ -95,6 +95,9 @@ function endGame() {
   while (enemies.length > 0) {
     enemies.shift();
   };
+  while (missiles.length > 0) {
+    missiles.shift();
+  };
 }
 
 $('#start').click(startGame);

@@ -27,7 +27,7 @@ function spawnEnemy() {
   enemies.push(new component(430, spawnPosition, "enemy"));
 }
 function fire() {
-  missiles.push(new component(player.x + 20, player.y + 7, "missle");
+  missiles.push(new component(player.x + 20, player.y + 7, "missle"));
 }
 
 

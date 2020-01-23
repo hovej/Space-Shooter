@@ -18,7 +18,8 @@ function component(x,y,type) {
   };
 }
 function spawnEnemy() {
-  enemies.push(new component(430, 150, "enemy"));
+  let spawnPosition = Math.floor(131 * Math.random());
+  enemies.push(new component(430, spawnPosition, "enemy"));
 }
 
 function clearGameArea() {
@@ -53,7 +54,7 @@ function updateGameArea() {
 };
 
 function startGame() {
-  player = new component(10, 225);
+  player = new component(10, 215);
   spawnEnemy();
   interval = setInterval(updateGameArea, 20);
   window.addEventListener('keydown', function(event) {

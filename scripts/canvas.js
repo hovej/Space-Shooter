@@ -55,16 +55,23 @@ function updateGameArea() {
   }
   for (let i=0; i<missiles.length; i++) {
     missiles[i].x += 5;
+    if (missiles[i].x > canvas.width) {
+      missiles.splice(i, 1);
+    };
   }
   if (isMoving) {
     switch (code) {
       case 87:
       case 38:
-        player.y -= 3;
+        if (player.y > 2) {
+          player.y -= 3;
+        };
         break;
       case 83:
       case 40:
-        player.y += 3;
+        if (player.y + 3 < canvas.height) {
+          player.y += 3;
+        };
         break;
     }
   }

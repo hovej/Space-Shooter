@@ -2,7 +2,16 @@
   border: 3px solid black
 }
 #button-container {
-  position: absolute;
-  left: 50%;
-  top: 10px;
+  margin-left: 175px;
+}
+#start {
+  background-color: green;
+}
+#end {
+  background-color: red;
+}
+button {
+  width: 50px;
+  height: 20px;
+  border-radius: 10px;
 }

@@ -1,6 +1,7 @@
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 let enemies = [];
+let missiles = [];
 let spawnTime = 0;
 let player;
 let code;
@@ -12,15 +13,23 @@ function component(x,y,type) {
   if (type == "enemy") {
     ctx.fillStyle = "red";
     ctx.fillRect(x, y, 20, 20);
+  } else if (type == "missile") {
+    ctx.fillStyle = "black";
+    ctx.fillRect(x, y, 6, 6);
   } else {
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, 20, 20);
   };
 }
+
 function spawnEnemy() {
   let spawnPosition = Math.floor(131 * Math.random());
   enemies.push(new component(430, spawnPosition, "enemy"));
 }
+function fire() {
+  missiles.push(new component(player.x + 20, player.y + 7, "missle");
+}
+
 
 function clearGameArea() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -29,6 +38,9 @@ function clearGameArea() {
 function updateGameArea() {
   for (let i=0; i<enemies.length; i++) {
     enemies[i].x--;
+  }
+  for (let i=0; i<missiles.length; i++) {
+    missles[i].x += 5;
   }
   if (isMoving) {
     switch (code) {
@@ -47,6 +59,10 @@ function updateGameArea() {
     ctx.fillStyle = "red";
     ctx.fillRect(enemies[i].x, enemies[i].y, 20, 20);
   }
+  for (let i=0; i<missiles.length; i++) {
+    ctx.fillStyle = "black";
+    ctx.fillRect(missiles[i].x, missiles[i].y, 6, 6);
+  }
   ctx.fillStyle = "blue";
   ctx.fillRect(player.x, player.y, 20, 20);
   spawnTime += 20;
@@ -63,6 +79,9 @@ function startGame() {
     window.addEventListener('keydown', function(event) {
       code = event.keyCode;
       isMoving = true;
+      if (code == 32) {
+        fire();
+      }
     });
     window.addEventListener('keyup', function() {
       isMoving = false;

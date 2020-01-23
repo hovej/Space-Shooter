@@ -33,9 +33,11 @@ function updateGameArea() {
   if (isMoving) {
     switch (code) {
       case 87:
+      case 38:
         player.y -= 3;
         break;
       case 83:
+      case 40:
         player.y += 3;
         break;
     }
@@ -54,21 +56,26 @@ function updateGameArea() {
 };
 
 function startGame() {
-  player = new component(10, 215);
-  spawnEnemy();
-  interval = setInterval(updateGameArea, 20);
-  window.addEventListener('keydown', function(event) {
-    code = event.keyCode;
-    isMoving = true;
-  });
-  window.addEventListener('keyup', function() {
-    isMoving = false;
-  });
+  if (spawnTime === 0) {
+    player = new component(10, 215);
+    spawnEnemy();
+    interval = setInterval(updateGameArea, 20);
+    window.addEventListener('keydown', function(event) {
+      code = event.keyCode;
+      isMoving = true;
+    });
+    window.addEventListener('keyup', function() {
+      isMoving = false;
+    });
+  }
 }
 function endGame() {
   clearInterval(interval);
   clearGameArea();
   spawnTime = 0;
+  while (enemies.length > 0) {
+    enemies.shift();
+  };
 }
 
 $('#start').click(startGame);

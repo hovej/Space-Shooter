@@ -25,7 +25,7 @@ function component(x,y,type) {
 function spawnEnemy() {
   let spawnPosition = Math.floor(131 * Math.random());
   enemies.push(new component(430, spawnPosition, "enemy"));
-}
+};
 function fire() {
   missiles.push(new component(player.x + 20, player.y + 7, "missile"));
 }
@@ -97,7 +97,7 @@ function endGame() {
   };
   while (missiles.length > 0) {
     missiles.shift();
-  };
+  }
 }
 
 $('#start').click(startGame);

@@ -73,7 +73,7 @@ function updateGameArea() {
 
 function startGame() {
   if (spawnTime === 0) {
-    player = new component(10, 215);
+    player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
     window.addEventListener('keydown', function(event) {

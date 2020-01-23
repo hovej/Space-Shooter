@@ -11,14 +11,20 @@ function component(x,y,type) {
   this.x = x;
   this.y = y;
   if (type == "enemy") {
+    this.width = 20;
+    this.height = 20;
     ctx.fillStyle = "red";
-    ctx.fillRect(x, y, 20, 20);
+    ctx.fillRect(x, y, this.width, this.height);
   } else if (type == "missile") {
+    this.width = 6;
+    this.height = 6;
     ctx.fillStyle = "black";
-    ctx.fillRect(x, y, 6, 6);
+    ctx.fillRect(x, y, this.width, this.height);
   } else {
+    this.width = 20;
+    this.height = 20;
     ctx.fillStyle = "blue";
-    ctx.fillRect(x, y, 20, 20);
+    ctx.fillRect(x, y, this.width, this.height);
   };
 }
 
@@ -30,6 +36,14 @@ function fire() {
   missiles.push(new component(player.x + 20, player.y + 7, "missile"));
 }
 
+function collisionCheck(obj1, obj2) {
+  if (obj1.x < obj2.x && obj1.x + obj1.width >= obj2.x) {
+    if (obj1.y <= obj2.y + obj2.height && obj1.y + obj1.height >= obj2.y) {
+      return true;
+    }
+  }
+  return false;
+}
 
 function clearGameArea() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -69,6 +83,14 @@ function updateGameArea() {
   if (spawnTime % 3000 === 0) {
     spawnEnemy();
   };
+  for (let i=0; i<missiles.length; i++) {
+    for (let j=0; j<enemies.length; j++) {
+      if (collisionCheck(missiles[i], enemies[j])) {
+        missiles.splice(i, 1);
+        enemies.splice(j, 1);
+      }
+    }
+  }
 };
 
 function startGame() {

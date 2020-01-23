@@ -40,7 +40,7 @@ function updateGameArea() {
     enemies[i].x--;
   }
   for (let i=0; i<missiles.length; i++) {
-    missles[i].x += 5;
+    missiles[i].x += 5;
   }
   if (isMoving) {
     switch (code) {

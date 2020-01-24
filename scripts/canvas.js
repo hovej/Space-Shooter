@@ -66,19 +66,19 @@ function updateGameArea() {
     switch (code) {
       case 87:
       case 38:
-        if (player.y > 3)
+        if (player.y >= 3) {
           player.y -= 3;
-        } else {
-          player.y = 0;
-        };
+          break;
+        }
+        player.y = 0;
         break;
       case 83:
       case 40:
         if (player.y + player.height < canvas.height - 3) {
           player.y += 3;
-        } else {
-          player.y = canvas.height - player.height;
-        };
+          break;
+        } 
+        player.y = canvas.height - player.height;
         break;
     }
   }

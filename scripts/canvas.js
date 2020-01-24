@@ -79,6 +79,9 @@ function updateGameArea() {
   for (let i=0; i<enemies.length; i++) {
     ctx.fillStyle = "red";
     ctx.fillRect(enemies[i].x, enemies[i].y, 20, 20);
+    if (collisionCheck(player, enemies[i] || enemies[i].x <= 0) {
+      endGame();
+    }
   }
   for (let i=0; i<missiles.length; i++) {
     ctx.fillStyle = "black";

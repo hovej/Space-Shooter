@@ -7,6 +7,17 @@ let player;
 let code;
 let isMoving;
 
+window.addEventListener('keydown', function(event) {
+  code = event.keyCode;
+  isMoving = true;
+  if (code == 32) {
+    fire();
+  }
+});
+window.addEventListener('keyup', function() {
+  isMoving = false;
+});
+
 function component(x,y,type) {
   this.x = x;
   this.y = y;
@@ -37,9 +48,6 @@ function fire() {
 }
 
 function collisionCheck(obj1, obj2) {
-  if (obj2 == []) {
-    return false;
-  }
   if (obj1.x < obj2.x && obj1.x + obj1.width >= obj2.x) {
     if (obj1.y <= obj2.y + obj2.height && obj1.y + obj1.height >= obj2.y) {
       return true;
@@ -86,9 +94,6 @@ function updateGameArea() {
   for (let i=0; i<enemies.length; i++) {
     ctx.fillStyle = "red";
     ctx.fillRect(enemies[i].x, enemies[i].y, 20, 20);
-    if (collisionCheck(player, enemies[i]) || enemies[i].x <= 0) {
-      endGame();
-    }
   }
   for (let i=0; i<missiles.length; i++) {
     ctx.fillStyle = "black";
@@ -108,23 +113,17 @@ function updateGameArea() {
       }
     }
   }
+  if (collisionCheck(player, enemies[i]) || enemies[i].x <= 0) {
+      endGame();
+  }
 };
 
 function startGame() {
+  canvas.focus();
   if (spawnTime === 0) {
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
-    window.addEventListener('keydown', function(event) {
-      code = event.keyCode;
-      isMoving = true;
-      if (code == 32) {
-        fire();
-      }
-    });
-    window.addEventListener('keyup', function() {
-      isMoving = false;
-    });
   }
 }
 function endGame() {

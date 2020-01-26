@@ -19,7 +19,8 @@
   font-size: 40px;
 }
 #instruction-text {
-  text-align: center;
+  text-align: justify;
+  margin-left: 10px;
 }
 #control-container {
   margin-left: 10px;

@@ -9,7 +9,7 @@ let isMoving;
 let score;
 let spawnSpeed;
 let killCount = 0;
-let currentLevel = 1;
+let currentLevel = 0;
 let levels = [
   {
     level: 1,
@@ -57,6 +57,7 @@ function component(x,y,type) {
   if (type == "enemy") {
     this.width = 20;
     this.height = 20;
+    this.speed = Math.floor(levels[currentLevel].level * Math.random()) + 1;
     ctx.fillStyle = "red";
     ctx.fillRect(x, y, this.width, this.height);
   } else if (type == "missile") {
@@ -96,19 +97,19 @@ function clearGameArea() {
 function updateScore() {
   ctx.font = "15px Arial";
   ctx.fillStyle = "black";
-  ctx.fillText("Level: " + currentLevel + " - Score: " + score, 350, 20);
+  ctx.fillText("Level: " + levels[currentLevel].level + " - Score: " + score, 20, 20);
 }
 
 function newLevel() {
   currentLevel ++;
   time = 0;
-  spawnSpeed = levels[currentLevel - 1].spawnTime;
+  spawnSpeed = levels[currentLevel].spawnTime;
   killCount = 0;
 }
 
 function updateGameArea() {
   for (let i=0; i<enemies.length; i++) {
-    enemies[i].x--;
+    enemies[i].x -= enemies[i].speed;
   }
   for (let i=0; i<missiles.length; i++) {
     missiles[i].x += 5;
@@ -159,8 +160,8 @@ function updateGameArea() {
         enemies.splice(j, 1);
         score += 50;
         killCount++;
-        if (levels[currentLevel - 1].hasOwnProperty('killReq')) {
-          if (killCount === levels[currentLevel - 1].killReq) {
+        if (levels[currentLevel].hasOwnProperty('killReq')) {
+          if (killCount === levels[currentLevel].killReq) {
             newLevel();
           }
         }
@@ -178,7 +179,7 @@ function startGame() {
     score = 0;
     spawnSpeed = levels[0].spawnTime;
     killCount = 0;
-    currentLevel = 1;
+    currentLevel = 3;
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);

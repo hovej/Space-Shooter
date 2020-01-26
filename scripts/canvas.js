@@ -45,7 +45,9 @@ window.addEventListener('keydown', function(event) {
   code = event.keyCode;
   isMoving = true;
   if (code == 32) {
-    fire();
+    if (time > 0) {
+      fire();
+    }
   } else if (code == 13) {
     startGame();
   }

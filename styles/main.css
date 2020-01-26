@@ -12,6 +12,7 @@
   height: 350px;
   border: 3px solid black;
   margin-left: 5px;
+  overflow-y: scroll;
 }
 .title {
   text-align: center;
@@ -22,6 +23,13 @@
 }
 #control-container {
   margin-left: 10px;
+}
+ul {
+  margin-right: 30px;
+  text-align: justify;
+}
+.update-item {
+  margin-top: 10px;
 }
 #button-container {
   margin-left: 175px;

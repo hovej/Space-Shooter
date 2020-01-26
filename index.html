@@ -5,7 +5,22 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     </head>
     <body>
-      <canvas id="myCanvas" width="450" height="300"></canvas>
+      <div id="container">
+        <canvas id="myCanvas" width="450" height="300"></canvas>
+        <div class="box" id="instructions">
+          <h1 class="title">INSTRUCTIONS</h1>
+          <p id="instruction-text">Welcome to Space Shooter! Your objective is to survive as long as you can by blasting the enemy out of the sky. But be careful, the longer you survive, the harder it becomes.</p>
+          <div id="control-container">
+            <h2 id="control-title">Controls</h2>
+            <p class="control"><strong>Move Up:</strong> W or Up Arrow Key<p>
+            <p class="control"><strong>Move Down:</strong> S or Down Arrow Key</p>
+            <p class="control"><strong>Fire:</strong> Spacebar</p>
+          </div>
+        </div>
+        <div class="box" id="updateNotes">
+          <h1 class="title">RECENT UPDATE</h1>
+        </div>
+      </div>
       <div id="button-container">
         <button id="start">Start</button>
         <button id="end">End</button>

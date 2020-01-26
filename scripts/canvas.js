@@ -97,9 +97,16 @@ function clearGameArea() {
 function updateScore() {
   ctx.font = "15px Arial";
   ctx.fillStyle = "black";
-  ctx.fillText("Level: " + levels[currentLevel].level + " - Score: " + score, 20, 20);
+  ctx.textAlign = "start";
+  ctx.fillText("Level: " + (currentLevel + 1) + " - Score: " + score, 20, 20);
 }
 
+function displayLevel() {
+  ctx.font = "Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.fillText("LEVEL " + (currentLevel + 1), canvas.width/2, canvas.height/2);
+}
 function newLevel() {
   currentLevel ++;
   time = 0;
@@ -143,6 +150,9 @@ function updateGameArea() {
     ctx.fillRect(enemies[i].x, enemies[i].y, 20, 20);
   }
   updateScore();
+  if (time < 2000) {
+    displayLevel();
+  }
   for (let i=0; i<missiles.length; i++) {
     ctx.fillStyle = "black";
     ctx.fillRect(missiles[i].x, missiles[i].y, 6, 6);
@@ -179,7 +189,7 @@ function startGame() {
     score = 0;
     spawnSpeed = levels[0].spawnTime;
     killCount = 0;
-    currentLevel = 3;
+    currentLevel = 0;
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);

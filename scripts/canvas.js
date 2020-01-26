@@ -194,6 +194,7 @@ function startGame() {
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
     updateScore();
+    document.getElementById('start').blur();
   }
 }
 function endGame() {
@@ -213,6 +214,7 @@ function endGame() {
   ctx.fillText("Final Score: " + score, canvas.width/2, canvas.height/2 -15);
   ctx.font = "15px Arial";
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
+  document.getElementById('end').blur();
 }
 
 $('#start').click(startGame);

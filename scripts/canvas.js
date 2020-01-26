@@ -2,20 +2,53 @@ let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 let enemies = [];
 let missiles = [];
-let spawnTime = 0;
 let player;
+let time = 0;
 let code;
 let isMoving;
+let score;
+let spawnSpeed;
+let killCount = 0;
+let currentLevel = 1;
+let levels = [
+  {
+    level: 1,
+    killReq: 5,
+    spawnTime: 3000
+  },
+  {
+    level: 2,
+    killReq: 8,
+    spawnTime: 2600
+  },
+  {
+    level: 3,
+    killReq: 10,
+    spawnTime: 2400
+  },
+  {
+    level: 4,
+    killReq: 15,
+    spawnTime: 2000
+  },
+  {
+    level: 5,
+    spawnTime: 1000
+  }
+]
+$(document).ready(canvas.focus());
 
+window.addEventListener('keyup', function() {
+  isMoving = false;
+});
 window.addEventListener('keydown', function(event) {
   code = event.keyCode;
   isMoving = true;
   if (code == 32) {
     fire();
+  } else if (code == 13) {
+    startGame();
   }
-});
-window.addEventListener('keyup', function() {
-  isMoving = false;
 });
 
 function component(x,y,type) {
@@ -40,7 +73,7 @@ function component(x,y,type) {
 }
 
 function spawnEnemy() {
-  let spawnPosition = Math.floor(131 * Math.random());
+  let spawnPosition = Math.floor(281 * Math.random());
   enemies.push(new component(430, spawnPosition, "enemy"));
 };
 function fire() {
@@ -58,6 +91,19 @@ function collisionCheck(obj1, obj2) {
 
 function clearGameArea() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+function updateScore() {
+  ctx.font = "15px Arial";
+  ctx.fillStyle = "black";
+  ctx.fillText("Level: " + currentLevel + " - Score: " + score, 350, 20);
+}
+
+function newLevel() {
+  currentLevel ++;
+  time = 0;
+  spawnSpeed = levels[currentLevel - 1].spawnTime;
+  killCount = 0;
 }
 
 function updateGameArea() {
@@ -95,14 +141,15 @@ function updateGameArea() {
     ctx.fillStyle = "red";
     ctx.fillRect(enemies[i].x, enemies[i].y, 20, 20);
   }
+  updateScore();
   for (let i=0; i<missiles.length; i++) {
     ctx.fillStyle = "black";
     ctx.fillRect(missiles[i].x, missiles[i].y, 6, 6);
   }
   ctx.fillStyle = "blue";
   ctx.fillRect(player.x, player.y, 20, 20);
-  spawnTime += 20;
-  if (spawnTime % 3000 === 0) {
+  time += 20;
+  if (time % spawnSpeed === 0) {
     spawnEnemy();
   };
   for (let i=0; i<missiles.length; i++) {
@@ -110,32 +157,44 @@ function updateGameArea() {
       if (collisionCheck(missiles[i], enemies[j])) {
         missiles.splice(i, 1);
         enemies.splice(j, 1);
+        score += 50;
+        killCount++;
+        if (levels[currentLevel - 1].hasOwnProperty('killReq')) {
+          if (killCount === levels[currentLevel - 1].killReq) {
+            newLevel();
+          }
+        }
       }
     }
   }
-  if (collisionCheck(player, enemies[i]) || enemies[i].x <= 0) {
+  if (collisionCheck(player, enemies[0]) || enemies[0].x <= 0) {
       endGame();
   }
 };
 
 function startGame() {
   canvas.focus();
-  if (spawnTime === 0) {
+  if (time === 0) {
+    score = 0;
+    spawnSpeed = levels[0].spawnTime;
+    killCount = 0;
+    currentLevel = 1;
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
+    updateScore();
   }
 }
 function endGame() {
   clearInterval(interval);
   clearGameArea();
-  spawnTime = 0;
+  time = 0;
   while (enemies.length > 0) {
     enemies.shift();
   };
   while (missiles.length > 0) {
     missiles.shift();
-  }
+  };
 }
 
 $('#start').click(startGame);

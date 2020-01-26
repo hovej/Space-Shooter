@@ -206,7 +206,15 @@ function endGame() {
   while (missiles.length > 0) {
     missiles.shift();
   };
+  ctx.font = "25px Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "center";
+  ctx.fillText("You died on level " + (currentLevel + 1) + ".", canvas.width/2, canvas.height/2 - 45);
+  ctx.fillText("Final Score: " + score, canvas.width/2, canvas.height/2 -15);
+  ctx.font = "15px Arial";
+  ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
 }
 
 $('#start').click(startGame);
 $('#end').click(endGame);
+

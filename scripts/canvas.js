@@ -4,6 +4,7 @@ let enemies = [];
 let missiles = [];
 let player;
 let time = 0;
+let isPaused = false;
 let code;
 let upCode;
 let isMoving;
@@ -50,19 +51,24 @@ window.addEventListener('keyup', function(event) {
   }
 });
 window.addEventListener('keydown', function(event) {
-  if (event.keyCode === 38 ||
-      event.keyCode === 40 ||
-      event.keyCode === 83 ||
-      event.keyCode === 87) {
+  if (event.keyCode == 38 ||
+      event.keyCode == 40 ||
+      event.keyCode == 83 ||
+      event.keyCode == 87) {
     code = event.keyCode;
     isMoving = true;
   }
-  if (event.keyCode == 32) {
-    shoot[0] = true;
-    shoot[1]++;
-  }
-  if (event.keyCode == 13) {
-    startGame();
+  switch (event.keyCode) {
+    case 32:
+      shoot[0] = true;
+      shoot[1]++;
+      break;
+    case 13:
+      startGame();
+      break;
+    case 80:
+      pauseGame();
+      break;
   }
 });
 
@@ -234,6 +240,19 @@ function endGame() {
   ctx.font = "15px Arial";
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
   document.getElementById('end').blur();
+}
+function pauseGame() {
+  if (!isPaused) {
+    clearInterval(interval);
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("PAUSED", canvas.width/2, canvas.height/2);
+    isPaused = true;
+  } else if (isPaused) {
+    interval = setInterval(updateGameArea, 20);
+    isPaused = false;
+  }
 }
 
 $('#start').click(startGame);

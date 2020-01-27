@@ -4,52 +4,45 @@ let enemies = [];
 let missiles = [];
 let player;
 let time = 0;
+let isPaused = false;
 let code;
+let upCode;
 let isMoving;
+let shoot = [false, 0];
 let score;
 let spawnSpeed;
 let killCount = 0;
 let currentLevel = 0;
-let levels = [
-  {
-    level: 1,
-    killReq: 5,
-    spawnTime: 3000
-  },
-  {
-    level: 2,
-    killReq: 8,
-    spawnTime: 2600
-  },
-  {
-    level: 3,
-    killReq: 10,
-    spawnTime: 2400
-  },
-  {
-    level: 4,
-    killReq: 15,
-    spawnTime: 2000
-  },
-  {
-    level: 5,
-    spawnTime: 1000
-  }
-]
 $(document).ready(canvas.focus());
 
-window.addEventListener('keyup', function() {
-  isMoving = false;
+window.addEventListener('keyup', function(event) {
+  upCode = event.keyCode;
+  if (upCode === code) {
+      isMoving = false;
+  }
+  if (upCode === 32) {
+    shoot[1] = 0;
+  }
 });
 window.addEventListener('keydown', function(event) {
-  code = event.keyCode;
-  isMoving = true;
-  if (code == 32) {
-    if (time > 0) {
-      fire();
-    }
-  } else if (code == 13) {
-    startGame();
+  if (event.keyCode == 38 ||
+      event.keyCode == 40 ||
+      event.keyCode == 83 ||
+      event.keyCode == 87) {
+    code = event.keyCode;
+    isMoving = true;
+  }
+  switch (event.keyCode) {
+    case 32:
+      shoot[0] = true;
+      shoot[1]++;
+      break;
+    case 13:
+      startGame();
+      break;
+    case 80:
+      pauseGame();
+      break;
   }
 });
 
@@ -59,7 +52,10 @@ function component(x,y,type) {
   if (type == "enemy") {
     this.width = 20;
     this.height = 20;
-    this.speed = Math.floor(levels[currentLevel].level * Math.random()) + 1;
+    if (currentLevel < 5) {
+      this.speed = Math.floor(levels[currentLevel].level * Math.random()) + 1;
+    } else if (currentLevel < 10) {
+      this.speed = Math.floor(levels[3 * Math.random()) + 1;
     ctx.fillStyle = "red";
     ctx.fillRect(x, y, this.width, this.height);
   } else if (type == "missile") {
@@ -84,7 +80,7 @@ function fire() {
 }
 
 function collisionCheck(obj1, obj2) {
-  if (obj1.x < obj2.x && obj1.x + obj1.width >= obj2.x) {
+  if (obj1.x < obj2.x + obj2.width && obj1.x + obj1.width >= obj2.x) {
     if (obj1.y <= obj2.y + obj2.height && obj1.y + obj1.height >= obj2.y) {
       return true;
     }
@@ -125,6 +121,10 @@ function updateGameArea() {
     if (missiles[i].x > canvas.width) {
       missiles.splice(i, 1);
     };
+  }
+  if (shoot[0] == true && shoot[1] === 1) {
+    fire();
+    shoot[0] = false;
   }
   if (isMoving) {
     switch (code) {
@@ -191,7 +191,7 @@ function startGame() {
     score = 0;
     spawnSpeed = levels[0].spawnTime;
     killCount = 0;
-    currentLevel = 0;
+    currentLevel = 4;
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
@@ -218,7 +218,19 @@ function endGame() {
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
   document.getElementById('end').blur();
 }
+function pauseGame() {
+  if (!isPaused) {
+    clearInterval(interval);
+    ctx.font = "20px Arial";
+    ctx.fillStyle = "black";
+    ctx.textAlign = "center";
+    ctx.fillText("PAUSED", canvas.width/2, canvas.height/2);
+    isPaused = true;
+  } else if (isPaused) {
+    interval = setInterval(updateGameArea, 20);
+    isPaused = false;
+  }
+}
 
 $('#start').click(startGame);
 $('#end').click(endGame);
-

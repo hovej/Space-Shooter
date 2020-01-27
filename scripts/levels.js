@@ -46,7 +46,6 @@ var levels = [
   },
   {
     level: 10,
-    spawnTime: 400,
-    killReq: 25
+    spawnTime: 400
   }
 ]

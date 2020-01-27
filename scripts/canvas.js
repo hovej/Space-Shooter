@@ -5,7 +5,9 @@ let missiles = [];
 let player;
 let time = 0;
 let code;
+let upCode;
 let isMoving;
+let shoot = [false, 0];
 let score;
 let spawnSpeed;
 let killCount = 0;
@@ -38,17 +40,28 @@ let levels = [
 ]
 $(document).ready(canvas.focus());
 
-window.addEventListener('keyup', function() {
-  isMoving = false;
+window.addEventListener('keyup', function(event) {
+  upCode = event.keyCode;
+  if (upCode === code) {
+      isMoving = false;
+  }
+  if (upCode === 32) {
+    shoot[1] = 0;
+  }
 });
 window.addEventListener('keydown', function(event) {
-  code = event.keyCode;
-  isMoving = true;
-  if (code == 32) {
-    if (time > 0) {
-      fire();
-    }
-  } else if (code == 13) {
+  if (event.keyCode === 38 ||
+      event.keyCode === 40 ||
+      event.keyCode === 83 ||
+      event.keyCode === 87) {
+    code = event.keyCode;
+    isMoving = true;
+  }
+  if (event.keyCode == 32) {
+    shoot[0] = true;
+    shoot[1]++;
+  }
+  if (event.keyCode == 13) {
     startGame();
   }
 });
@@ -125,6 +138,10 @@ function updateGameArea() {
     if (missiles[i].x > canvas.width) {
       missiles.splice(i, 1);
     };
+  }
+  if (shoot[0] == true && shoot[1] === 1) {
+    fire();
+    shoot[0] = false;
   }
   if (isMoving) {
     switch (code) {
@@ -221,4 +238,3 @@ function endGame() {
 
 $('#start').click(startGame);
 $('#end').click(endGame);
-

@@ -36,7 +36,8 @@ let levels = [
   },
   {
     level: 5,
-    spawnTime: 1000
+    spawnTime: 1000,
+    killReq: 5
   }
 ]
 $(document).ready(canvas.focus());
@@ -214,7 +215,7 @@ function startGame() {
     score = 0;
     spawnSpeed = levels[0].spawnTime;
     killCount = 0;
-    currentLevel = 0;
+    currentLevel = 4;
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);

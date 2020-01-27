@@ -52,13 +52,9 @@ function component(x,y,type) {
   if (type == "enemy") {
     this.width = 20;
     this.height = 20;
-    if (currentLevel < 5) {
-      this.speed = Math.floor(levels[currentLevel].level * Math.random()) + 1;
-    } else if (currentLevel < 10) {
-      this.speed = Math.floor(3 * Math.random()) + 1;
-      ctx.fillStyle = "red";
-      ctx.fillRect(x, y, this.width, this.height);
-    }
+    this.speed = Math.floor(levels[currentLevel].speed * Math.random()) + 1;
+    ctx.fillStyle = "red";
+    ctx.fillRect(x, y, this.width, this.height);
   } else if (type == "missile") {
     this.width = 6;
     this.height = 6;

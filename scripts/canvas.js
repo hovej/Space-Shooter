@@ -55,9 +55,10 @@ function component(x,y,type) {
     if (currentLevel < 5) {
       this.speed = Math.floor(levels[currentLevel].level * Math.random()) + 1;
     } else if (currentLevel < 10) {
-      this.speed = Math.floor(levels[3 * Math.random()) + 1;
-    ctx.fillStyle = "red";
-    ctx.fillRect(x, y, this.width, this.height);
+      this.speed = Math.floor(3 * Math.random()) + 1;
+      ctx.fillStyle = "red";
+      ctx.fillRect(x, y, this.width, this.height);
+    }
   } else if (type == "missile") {
     this.width = 6;
     this.height = 6;
@@ -191,7 +192,7 @@ function startGame() {
     score = 0;
     spawnSpeed = levels[0].spawnTime;
     killCount = 0;
-    currentLevel = 4;
+    currentLevel = 0;
     player = new component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);

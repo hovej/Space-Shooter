@@ -9,7 +9,7 @@ let code;
 let upCode;
 let isMoving;
 let shoot = [false, 0];
-let score;
+let score = 0;
 let spawnSpeed;
 let killCount = 0;
 let currentLevel = 0;
@@ -45,6 +45,10 @@ window.addEventListener('keydown', function(event) {
       break;
   }
 });
+
+function submitHiscore() {
+  localStorage.setItem('hiscore', JSON.stringify(hiscore));
+}
 
 function component(x,y,type) {
   this.x = x;

@@ -63,6 +63,9 @@ function component(x,y,type) {
   } else {
     this.width = 20;
     this.height = 20;
+    this.canFire = true;
+    this.reload = 0;
+    this.reloadSpeed = 333;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };
@@ -73,7 +76,10 @@ function spawnEnemy() {
   enemies.push(new component(430, spawnPosition, "enemy"));
 };
 function fire() {
-  missiles.push(new component(player.x + 20, player.y + 7, "missile"));
+  if (player.canFire) {
+    missiles.push(new component(player.x + 20, player.y + 7, "missile"));
+    player.canFire = false;
+  }
 }
 
 function collisionCheck(obj1, obj2) {
@@ -158,6 +164,13 @@ function updateGameArea() {
   }
   ctx.fillStyle = "blue";
   ctx.fillRect(player.x, player.y, 20, 20);
+  if (!player.canFire) {
+    player.reload += 20;
+  }
+  if (player.reload > player.reloadSpeed) {
+    player.reload = 0;
+    player.canFire = true;
+  }
   time += 20;
   if (time % spawnSpeed === 0) {
     spawnEnemy();

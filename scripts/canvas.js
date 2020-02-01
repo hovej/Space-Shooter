@@ -10,6 +10,7 @@ let upCode;
 let isMoving;
 let shoot = [false, 0];
 let score = 0;
+let hiscore;
 let spawnSpeed;
 let killCount = 0;
 let currentLevel = 0;
@@ -47,7 +48,13 @@ window.addEventListener('keydown', function(event) {
 });
 
 function submitHiscore() {
-  localStorage.setItem('hiscore', JSON.stringify(hiscore));
+  localStorage.setItem('hiscore', JSON.stringify(score));
+}
+function getHiscore() {
+  hiscore = localStorage.getItem('hiscore');
+  if (!(hiscore >= 0)) {
+    hiscore = 0;
+  }
 }
 
 function component(x,y,type) {
@@ -104,6 +111,8 @@ function updateScore() {
   ctx.fillStyle = "black";
   ctx.textAlign = "start";
   ctx.fillText("Level: " + (currentLevel + 1) + " - Score: " + score, 20, 20);
+  ctx.textAlign = "center";
+  ctx.fillText("Hiscore: " + hiscore, canvas.width/2, 20);
 }
 
 function displayLevel() {
@@ -210,6 +219,7 @@ function startGame() {
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
     updateScore();
+    getHiscore();
     document.getElementById('start').blur();
   }
 }
@@ -226,8 +236,13 @@ function endGame() {
   ctx.font = "25px Arial";
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
-  ctx.fillText("You died on level " + (currentLevel + 1) + ".", canvas.width/2, canvas.height/2 - 45);
-  ctx.fillText("Final Score: " + score, canvas.width/2, canvas.height/2 -15);
+  if (score <= hiscore) {
+    ctx.fillText("You died on level " + (currentLevel + 1) + ".", canvas.width/2, canvas.height/2 - 45);
+    ctx.fillText("Final Score: " + score, canvas.width/2, canvas.height/2 -15);
+  } else {
+    ctx.fillText("Congratulations!", canvas.width/2, canvas.height/2 - 45);
+    ctx.fillText("Your new hiscore is " + score + "!", canvas.width/2, canvas.height/2 - 15);
+    submitHiscore();
   ctx.font = "15px Arial";
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
   document.getElementById('end').blur();

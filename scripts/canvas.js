@@ -124,7 +124,7 @@ function displayLevel() {
   ctx.textAlign = "center";
   ctx.fillText("LEVEL " + (currentLevel + 1), canvas.width/2, canvas.height/2);
   if ((currentLevel + 1) % 5 == 0) {
-    ctx.fillText("You have been given the " + powers[player.power].name + "power-up!", canvas.width/2, 50);
+    ctx.fillText("You have been given the " + powers[player.power].name + " power-up!", canvas.width/2, 50);
     ctx.fillText(powers[player.power].description, canvas.width/2, 70);
   }
 }
@@ -261,10 +261,10 @@ function endGame() {
     ctx.fillText("Congratulations!", canvas.width/2, canvas.height/2 - 45);
     ctx.fillText("Your new high score is " + score + "!", canvas.width/2, canvas.height/2 - 15);
     submitHighScore();
+  }
   ctx.font = "15px Arial";
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
   document.getElementById('end').blur();
-  }
 }
 function pauseGame() {
   if (!isPaused) {

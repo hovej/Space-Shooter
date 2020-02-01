@@ -257,6 +257,7 @@ function endGame() {
   ctx.font = "15px Arial";
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
   document.getElementById('end').blur();
+  }
 }
 function pauseGame() {
   if (!isPaused) {

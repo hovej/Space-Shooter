@@ -146,6 +146,7 @@ function displayLives() {
   ctx.fillStyle = "black";
   ctx.textAlign = "black";
   ctx.fillText("Lives: " + player.lives, 430, 20);
+}
 
 function displayLevel() {
   ctx.font = "Arial";

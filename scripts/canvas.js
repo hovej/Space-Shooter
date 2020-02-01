@@ -48,11 +48,11 @@ window.addEventListener('keydown', function(event) {
   }
 });
 
-function submitHiscore() {
+function submitHighScore() {
   localStorage.setItem('highScore', JSON.stringify(score));
 }
-function getHiscore() {
-  hiscore = localStorage.getItem('highScore');
+function getHighScore() {
+  highScore = localStorage.getItem('highScore');
   if (!(highScore >= 0)) {
     highScore = 0;
   }
@@ -230,7 +230,7 @@ function startGame() {
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
     updateScore();
-    getHiscore();
+    getHighScore();
     document.getElementById('start').blur();
   }
 }
@@ -253,7 +253,7 @@ function endGame() {
   } else {
     ctx.fillText("Congratulations!", canvas.width/2, canvas.height/2 - 45);
     ctx.fillText("Your new high score is " + score + "!", canvas.width/2, canvas.height/2 - 15);
-    submitHiscore();
+    submitHighScore();
   ctx.font = "15px Arial";
   ctx.fillText("Press Start or hit Enter to try again", canvas.width/2, canvas.height/2 + 15);
   document.getElementById('end').blur();

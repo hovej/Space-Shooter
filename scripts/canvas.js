@@ -79,7 +79,7 @@ function component(x,y,type) {
     this.reload = 0;
     this.reloadSpeed = 333;
     this.moveSpeed = 3;
-    this.power;
+    this.power = -1;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };
@@ -123,16 +123,20 @@ function displayLevel() {
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.fillText("LEVEL " + (currentLevel + 1), canvas.width/2, canvas.height/2);
-  ctx.fillText("You have been given the " + powers[player.power].name + "power-up!", canvas.width/2, 50);
-  ctx.fillText(powers[player.power].description, canvas.width/2, 70);
+  if ((currentLevel + 1) % 5 == 0) {
+    ctx.fillText("You have been given the " + powers[player.power].name + "power-up!", canvas.width/2, 50);
+    ctx.fillText(powers[player.power].description, canvas.width/2, 70);
+  }
 }
 function newLevel() {
   currentLevel ++;
   time = 0;
   spawnSpeed = levels[currentLevel].spawnTime;
   killCount = 0;
-  if (currentLevel % 5 == 0) {
-    powers[player.power].clear();
+  if ((currentLevel + 1) % 5 == 0) {
+    if (currentLevel != 4) {
+      powers[player.power].clear();
+    }
     let powerNum = Math.floor(powers.length * Math.random());
     player.power = powerNum;
     powers[player.power].power();
@@ -235,6 +239,9 @@ function startGame() {
   }
 }
 function endGame() {
+  if (currentLevel > 3) {
+    powers[player.power].clear();
+  }
   clearInterval(interval);
   clearGameArea();
   time = 0;

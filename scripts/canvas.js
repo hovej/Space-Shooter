@@ -75,12 +75,14 @@ function Component(x,y,type) {
     this.reloadSpeed = 333;
     this.moveSpeed = 3;
     this.power = -1;
-    this.lives = 1;
+    this.lives = 10;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };
 }
 function Enemy(x, y, type) {
+  this.x = x;
+  this.y = y;
   this.speed = Math.floor(levels[currentLevel].speed * Math.random()) + 1;
   if (type == "normal") {
     this.width = enemySize;
@@ -105,6 +107,8 @@ function spawnEnemy() {
     } else {
       enemies.push(new Enemy(430, spawnPosition, "attack"));
     }
+  } else {
+    enemies.push(new Enemy(430, spawnPosition, "normal"));
   }
 };
 function fire() {
@@ -116,6 +120,7 @@ function fire() {
 function enemyFire(enemy) {
   if (enemy.canFire) {
     enemyMissiles.push(new Component(enemy.x, enemy.y + (enemy.height/2 - 3), "missile"));
+    console.log(time);
   }
 }
 
@@ -142,14 +147,14 @@ function updateScore() {
 }
 
 function displayLives() {
-  ctx.font = "Arial";
+  ctx.font = "15px Arial";
   ctx.fillStyle = "black";
-  ctx.textAlign = "black";
+  ctx.textAlign = "right";
   ctx.fillText("Lives: " + player.lives, 430, 20);
 }
 
 function displayLevel() {
-  ctx.font = "Arial";
+  ctx.font = " 15px Arial";
   ctx.fillStyle = "black";
   ctx.textAlign = "center";
   ctx.fillText("LEVEL " + (currentLevel + 1), canvas.width/2, canvas.height/2);
@@ -261,12 +266,14 @@ function updateGameArea() {
   }
   if (collisionCheck(player, enemies[0]) || enemies[0].x <= 0) {
     player.lives--;
+    enemies.splice(0, 1);
     if (player.lives == 0) {
       endGame();
     }
   }
   if (collisionCheck(player, enemyMissiles[0])) {
     player.lives--;
+    enemyMissiles.splice(0, 1);
     if (player.lives == 0) {
       endGame();
     }
@@ -277,9 +284,9 @@ function startGame() {
   canvas.focus();
   if (time === 0) {
     score = 0;
-    spawnSpeed = levels[0].spawnTime;
+    spawnSpeed = levels[3].spawnTime;
     killCount = 0;
-    currentLevel = 0;
+    currentLevel = 3;
     player = new Component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);

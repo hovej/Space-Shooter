@@ -80,6 +80,7 @@ function component(x,y,type) {
     this.reloadSpeed = 333;
     this.moveSpeed = 3;
     this.power = -1;
+    this.lives = 1;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };
@@ -140,6 +141,7 @@ function newLevel() {
     let powerNum = Math.floor(powers.length * Math.random());
     player.power = powerNum;
     powers[player.power].power();
+    player.lives++;
   }
 }
 
@@ -219,7 +221,10 @@ function updateGameArea() {
     }
   }
   if (collisionCheck(player, enemies[0]) || enemies[0].x <= 0) {
+    player.lives--;
+    if (player.lives == 0) {
       endGame();
+    }
   }
 };
 

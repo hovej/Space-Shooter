@@ -3,6 +3,7 @@ let ctx = canvas.getContext("2d");
 let enemies = [];
 let missiles = [];
 let player;
+let enemySize = 20;
 let time = 0;
 let isPaused = false;
 let code;
@@ -61,8 +62,8 @@ function component(x,y,type) {
   this.x = x;
   this.y = y;
   if (type == "enemy") {
-    this.width = 20;
-    this.height = 20;
+    this.width = enemySize;
+    this.height = enemySize;
     this.speed = Math.floor(levels[currentLevel].speed * Math.random()) + 1;
     ctx.fillStyle = "red";
     ctx.fillRect(x, y, this.width, this.height);
@@ -166,7 +167,7 @@ function updateGameArea() {
   clearGameArea();
   for (let i=0; i<enemies.length; i++) {
     ctx.fillStyle = "red";
-    ctx.fillRect(enemies[i].x, enemies[i].y, 20, 20);
+    ctx.fillRect(enemies[i].x, enemies[i].y, enemySize, enemySize);
   }
   updateScore();
   if (time < 2000) {

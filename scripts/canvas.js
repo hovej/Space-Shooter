@@ -119,6 +119,12 @@ function updateScore() {
   ctx.fillText("High Score: " + highScore, canvas.width/2, 20);
 }
 
+function displayLives() {
+  ctx.font = "Arial";
+  ctx.fillStyle = "black";
+  ctx.textAlign = "black";
+  ctx.fillText("Lives: " + player.lives, 430, 20);
+
 function displayLevel() {
   ctx.font = "Arial";
   ctx.fillStyle = "black";
@@ -184,6 +190,7 @@ function updateGameArea() {
     ctx.fillStyle = "red";
     ctx.fillRect(enemies[i].x, enemies[i].y, enemySize, enemySize);
   }
+  displayLives();
   updateScore();
   if (time < 2000) {
     displayLevel();

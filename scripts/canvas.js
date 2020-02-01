@@ -77,6 +77,7 @@ function component(x,y,type) {
     this.canFire = true;
     this.reload = 0;
     this.reloadSpeed = 333;
+    this.moveSpeed = 3;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };
@@ -146,16 +147,16 @@ function updateGameArea() {
     switch (code) {
       case 87:
       case 38:
-        if (player.y >= 3) {
-          player.y -= 3;
+        if (player.y >= player.moveSpeed) {
+          player.y -= player.moveSpeed;
           break;
         }
         player.y = 0;
         break;
       case 83:
       case 40:
-        if (player.y + player.height < canvas.height - 3) {
-          player.y += 3;
+        if (player.y + player.height < canvas.height - player.moveSpeed) {
+          player.y += player.moveSpeed;
           break;
         } 
         player.y = canvas.height - player.height;

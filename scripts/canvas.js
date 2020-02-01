@@ -58,16 +58,10 @@ function getHighScore() {
   }
 }
 
-function component(x,y,type) {
+function Component(x,y,type) {
   this.x = x;
   this.y = y;
-  if (type == "enemy") {
-    this.width = enemySize;
-    this.height = enemySize;
-    this.speed = Math.floor(levels[currentLevel].speed * Math.random()) + 1;
-    ctx.fillStyle = "red";
-    ctx.fillRect(x, y, this.width, this.height);
-  } else if (type == "missile") {
+  if (type == "missile") {
     this.width = 6;
     this.height = 6;
     ctx.fillStyle = "black";
@@ -85,14 +79,36 @@ function component(x,y,type) {
     ctx.fillRect(x, y, this.width, this.height);
   };
 }
+function Enemy(x, y, type) {
+  this.speed = Math.floor(levels[currentLevel].speed * Math.random()) + 1;
+  if (type == "normal") {
+    this.width = enemySize;
+    this.height = enemySize;
+    this.canShoot = false;
+    ctx.fillStyle = "red";
+  } else if (type == "attack") {
+    this.width = enemySize + 5;
+    this.height = enemySize + 5;
+    this.canShoot = true;
+    ctx.fillStyle = "orange";
+  }
+  ctx.fillRect(x, y, this.width, this.height);
+}
 
 function spawnEnemy() {
-  let spawnPosition = Math.floor(281 * Math.random());
-  enemies.push(new component(430, spawnPosition, "enemy"));
+  let spawnPosition = Math.floor((301 - enemySize) * Math.random());
+  if (currentLevel > 9) {
+    let chance = Math.floor(100 * Math.random());
+    if (chance <= 49) {
+      enemies.push(new Enemy(430, spawnPosition, "normal"));
+    } else {
+      enemies.push(new Enemy(430, spawnPosition, "attack"));
+    }
+  }
 };
 function fire() {
   if (player.canFire) {
-    missiles.push(new component(player.x + 20, player.y + 7, "missile"));
+    missiles.push(new Component(player.x + 20, player.y + 7, "missile"));
     player.canFire = false;
   }
 }
@@ -242,7 +258,7 @@ function startGame() {
     spawnSpeed = levels[0].spawnTime;
     killCount = 0;
     currentLevel = 0;
-    player = new component(10, 140);
+    player = new Component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);
     updateScore();

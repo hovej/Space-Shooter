@@ -1,6 +1,7 @@
 let canvas = document.getElementById("myCanvas");
 let ctx = canvas.getContext("2d");
 let enemies = [];
+let enemyMissiles = [];
 let missiles = [];
 let player;
 let enemySize = 20;
@@ -84,12 +85,12 @@ function Enemy(x, y, type) {
   if (type == "normal") {
     this.width = enemySize;
     this.height = enemySize;
-    this.canShoot = false;
+    this.canFire = false;
     ctx.fillStyle = "red";
   } else if (type == "attack") {
     this.width = enemySize + 5;
     this.height = enemySize + 5;
-    this.canShoot = true;
+    this.canFire = true;
     ctx.fillStyle = "orange";
   }
   ctx.fillRect(x, y, this.width, this.height);
@@ -110,6 +111,11 @@ function fire() {
   if (player.canFire) {
     missiles.push(new Component(player.x + 20, player.y + 7, "missile"));
     player.canFire = false;
+  }
+}
+function enemyFire(enemy) {
+  if (enemy.canFire) {
+    enemyMissiles.push(new Component(enemy.x, enemy.y + (enemy.height/2 - 3), "missile"));
   }
 }
 
@@ -170,12 +176,21 @@ function newLevel() {
 function updateGameArea() {
   for (let i=0; i<enemies.length; i++) {
     enemies[i].x -= enemies[i].speed;
+    if (time % 700 == 0) {
+      enemyFire(enemies[i]);
+    }
   }
   for (let i=0; i<missiles.length; i++) {
     missiles[i].x += 5;
     if (missiles[i].x > canvas.width) {
       missiles.splice(i, 1);
     };
+  }
+  for (let i=0; i<enemyMissiles.length; i++) {
+    enemyMissiles[i].x -= 5;
+    if (enemyMissiles[i].x < 0) {
+      enemyMissiles.splice(i, 1);
+    }
   }
   if (shoot[0] == true && shoot[1] === 1) {
     fire();
@@ -244,6 +259,12 @@ function updateGameArea() {
     }
   }
   if (collisionCheck(player, enemies[0]) || enemies[0].x <= 0) {
+    player.lives--;
+    if (player.lives == 0) {
+      endGame();
+    }
+  }
+  if (collisionCheck(player, enemyMissiles[0])) {
     player.lives--;
     if (player.lives == 0) {
       endGame();

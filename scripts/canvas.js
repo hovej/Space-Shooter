@@ -75,7 +75,7 @@ function Component(x,y,type) {
     this.reloadSpeed = 333;
     this.moveSpeed = 3;
     this.power = -1;
-    this.lives = 10;
+    this.lives = 1;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };

@@ -284,9 +284,9 @@ function startGame() {
   canvas.focus();
   if (time === 0) {
     score = 0;
-    spawnSpeed = levels[3].spawnTime;
+    spawnSpeed = levels[0].spawnTime;
     killCount = 0;
-    currentLevel = 3;
+    currentLevel = 0;
     player = new Component(10, 140);
     spawnEnemy();
     interval = setInterval(updateGameArea, 20);

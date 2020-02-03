@@ -308,6 +308,9 @@ function endGame() {
   while (missiles.length > 0) {
     missiles.shift();
   };
+  while (enemyMissiles.length > 0) {
+    enemyMissiles.shift();
+  }
   ctx.font = "25px Arial";
   ctx.fillStyle = "black";
   ctx.textAlign = "center";

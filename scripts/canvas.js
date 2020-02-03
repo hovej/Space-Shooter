@@ -75,7 +75,7 @@ function Component(x,y,type) {
     this.reloadSpeed = 333;
     this.moveSpeed = 3;
     this.power = -1;
-    this.lives = 1;
+    this.lives = 10;
     ctx.fillStyle = "blue";
     ctx.fillRect(x, y, this.width, this.height);
   };
@@ -88,14 +88,20 @@ function Enemy(x, y, type) {
     this.width = enemySize;
     this.height = enemySize;
     this.canFire = false;
-    ctx.fillStyle = "red";
+    this.color = "red";
+    console.log("normal");
+    ctx.fillStyle = this.color;
+    ctx.fillRect(x, y, this.width, this.height);
   } else if (type == "attack") {
     this.width = enemySize + 5;
     this.height = enemySize + 5;
     this.canFire = true;
-    ctx.fillStyle = "orange";
+    this.color = "orange";
+    console.log("attack");
+    ctx.fillStyle = this.color;
+    ctx.fillRect(x, y, this.width, this.height);
   }
-  ctx.fillRect(x, y, this.width, this.height);
+  
 }
 
 function spawnEnemy() {
@@ -125,9 +131,11 @@ function enemyFire(enemy) {
 }
 
 function collisionCheck(obj1, obj2) {
-  if (obj1.x < obj2.x + obj2.width && obj1.x + obj1.width >= obj2.x) {
-    if (obj1.y <= obj2.y + obj2.height && obj1.y + obj1.height >= obj2.y) {
-      return true;
+  if (obj1.x < obj2.x + obj2.width) {
+    if (obj1.x + obj1.width >= obj2.x) {
+      if (obj1.y <= obj2.y + obj2.height && obj1.y + obj1.height >= obj2.y) {
+        return true;
+      }
     }
   }
   return false;
@@ -182,7 +190,7 @@ function newLevel() {
 function updateGameArea() {
   for (let i=0; i<enemies.length; i++) {
     enemies[i].x -= enemies[i].speed;
-    if (time % 700 == 0) {
+    if (time % 1000 == 0) {
       enemyFire(enemies[i]);
     }
   }
@@ -190,12 +198,14 @@ function updateGameArea() {
     missiles[i].x += 5;
     if (missiles[i].x > canvas.width) {
       missiles.splice(i, 1);
-    };
+      i--;
+    }
   }
   for (let i=0; i<enemyMissiles.length; i++) {
     enemyMissiles[i].x -= 5;
     if (enemyMissiles[i].x < 0) {
       enemyMissiles.splice(i, 1);
+      i--;
     }
   }
   if (shoot[0] == true && shoot[1] === 1) {
@@ -224,8 +234,12 @@ function updateGameArea() {
   }
   clearGameArea();
   for (let i=0; i<enemies.length; i++) {
-    ctx.fillStyle = "red";
-    ctx.fillRect(enemies[i].x, enemies[i].y, enemySize, enemySize);
+    ctx.fillStyle = enemies[i].color;
+    ctx.fillRect(enemies[i].x, enemies[i].y, enemies[i].width, enemies[i].height);
+  }
+  for (let i=0; i<enemyMissiles.length; i++) {
+    ctx.fillStyle = "black";
+    ctx.fillRect(enemyMissiles[i].x, enemyMissiles[i].y, 6, 6);
   }
   displayLives();
   updateScore();
@@ -252,8 +266,11 @@ function updateGameArea() {
   for (let i=0; i<missiles.length; i++) {
     for (let j=0; j<enemies.length; j++) {
       if (collisionCheck(missiles[i], enemies[j])) {
+        console.log("test");
         missiles.splice(i, 1);
         enemies.splice(j, 1);
+        i--;
+        j--;
         score += 50;
         killCount++;
         if (levels[currentLevel].hasOwnProperty('killReq')) {
